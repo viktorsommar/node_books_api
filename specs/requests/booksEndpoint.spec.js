@@ -14,10 +14,18 @@ after((done) => {
 });
 
 describe("GET /api/v1/books", () => {
-  it("is expected to respond with status code 200", async () => {
+  before(async () => {
     response = await request.get("/api/v1/books");
-    expect(response.body).to.equal({
+  });
+
+  it("is expected to respond with status 200", () => {
+    expect(response.status).to.equal(200);
+  });
+
+  it("is expected to respond with list of books", async () => {
+    const expectedResponse = {
       books: [{ title: "Lord of the Rings: Fellowship of the Ring" }],
-    });
+    };
+    expect(response.body).to.deep.equal(expectedResponse);
   });
 });
