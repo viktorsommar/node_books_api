@@ -15,9 +15,18 @@ after((done) => {
 });
 
 beforeEach(async () => {
+  const author = await factory.create("Author", {
+    id: 1,
+    firstName: "Adi",
+    lastname: "Naik",
+  });
   await factory.createMany("Book", 2, [
-    { id: 100, title: "This is a factory title" },
-    { id: 101, title: "This is another book from factory" },
+    { id: 100, title: "This is a factory title", AuthorId: author.id },
+    {
+      id: 101,
+      title: "This is another book from factory",
+      AuthorId: author.id,
+    },
   ]);
 });
 
@@ -40,8 +49,16 @@ describe("GET /api/v1/books", () => {
 });
 
 describe("GET /api/v1/books/:id", () => {
-  it("is expected to respond with a single book", async () => {
+  beforeEach(async () => {
     response = await request.get("/api/v1/books/101");
-    expect(response.body.book.title).to.equal("This is another book from factory");
+  });
+  it("is expected to respond with a single book with a title", async () => {
+    expect(response.body.book.title).to.equal(
+      "This is another book from factory"
+    );
+  });
+
+  it("is expect to respond with an author", () => {
+    expect(response.body.book.author.firstName).to.equal("Adi");
   });
 });
