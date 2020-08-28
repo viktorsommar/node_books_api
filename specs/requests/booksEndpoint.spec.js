@@ -30,6 +30,6 @@ describe("GET /api/v1/books", () => {
 describe("GET /api/v1/books/:id", () => {
   it('is expected to respond with a single book', async () => {
     response = await request.get('/api/v1/books/2')
-    expect(response.body.book.title).to.equal("Learn NodeJS with CraftAcademy")
+    expect(response.body.book.title).to.equal("Learn Sequelize with Adi")
   })
 })
